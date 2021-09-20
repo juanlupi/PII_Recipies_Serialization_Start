@@ -9,7 +9,7 @@ using System.Text.Json.Serialization;
 
 namespace Recipies
 {
-    public class Step
+    public class Step : IJsonConvertible
     {
         [JsonConstructor]
         public Step(Product input, double quantity, Equipment equipment, int time)
@@ -24,6 +24,21 @@ namespace Recipies
         {
             this.LoadFromJson(json);
         }
+
+        public string ConvertToJson()
+        {
+            return JsonSerializer.Serialize(this);
+        }
+
+        public void LoadFromJson(string json)
+        {
+            Step des = JsonSerializer.Deserialize<Step>(json);
+            this.Quantity = des.Quantity;
+            this.Input = des.Input;
+            this.Time = des.Time;
+            this.Equipment = des.Equipment;
+        }
+
 
         public Product Input { get; set; }
 
